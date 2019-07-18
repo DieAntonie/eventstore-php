@@ -1,5 +1,7 @@
 <?php
 
-echo "Hello Wolrd!";
+require "model/Order.php";
+
+echo "Hello Wolrd! <br/>";
 
 ?>
