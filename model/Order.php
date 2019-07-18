@@ -1,26 +1,51 @@
 <?php
 
-echo "Loading Order... <br/>";
+echo "Loading Order.php... <br/>";
+
+require_once "event/OrderEvents.php";
 
 class Order 
 {
-    function __construct(int $user_id, string $status = "new")
+    function __construct(array $events = [])
     {
-        echo "Order->__construct($user_id, $status) <br/>";
-        $this->user_id = $user_id;
-        $this->status = $status;
+        echo __METHOD__."(".json_encode($events).") <br/>"; // 
+        foreach ($events as $index => $event) {
+            $this->apply($event);
+        }
+        $this->changes = [];
+    }
+
+    function apply($event)
+    {
+        echo __METHOD__."(".json_encode($event).") <br/>";
+        switch (get_class($event)) {
+            case ORDER_CREATED_CLASS:
+                $this->user_id = $event->user_id;
+                $this->status = "new";
+                break;
+
+            case STATUS_CHANGED_CLASS:
+                $this->status = $event->new_status;
+                break;
+
+            default:
+                break;
+        }
     }
 
     function set_status(string $new_status = null)
     {
-        echo "Order->set_status($new_status) <br/>";
+        echo __METHOD__."($new_status) <br/>";
         if (!in_array($new_status, ["new", "paid", "confirmed", "shipped"]))
-            throw new Exception("$new_status Is not a correct status", 1);
+            throw new Exception("\"$new_status\" is not a correct status", 1);
             
-        $this->status = $new_status;
+        $event = new StatusChanged($new_status);
+        $this->apply($event);
+        array_push($this->changes, $event);
     }
 }
 
-echo "Order Loaded! <br/>";
+define("ORDER_CLASS", get_class(new Order()));
+echo ORDER_CLASS." Loaded! <br/>";
 
 ?>
