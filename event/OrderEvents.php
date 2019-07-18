@@ -1,6 +1,8 @@
 <?php
 
-echo "Loading Order Events... <br/>";
+echo "Loading OrderEvents.php... <br/>";
+
+require_once "model/Order.php";
 
 class OrderCreated
 {
@@ -11,6 +13,9 @@ class OrderCreated
     }
 }
 
+define("ORDER_CREATED_CLASS", get_class(new OrderCreated()));
+echo ORDER_CREATED_CLASS." Loaded! <br/>";
+
 class StatusChanged
 {
     function __construct(string $new_status = null)
@@ -20,6 +25,7 @@ class StatusChanged
     }
 }
 
-echo "Order Events Loaded! <br/>";
+define("STATUS_CHANGED_CLASS", get_class(new StatusChanged()));
+echo STATUS_CHANGED_CLASS." Loaded! <br/>";
 
 ?>
