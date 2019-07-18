@@ -4,17 +4,43 @@ echo "Loading Order.php... <br/>";
 
 require_once "event/OrderEvents.php";
 
+/** Stateful representation of an Order */
 class Order 
 {
+    /**
+     * `User` assoiciated with the `Order`
+     * @var int
+     */
+    var $user_id;
+
+    /**
+     * Status of the `Order`
+     * @var string
+     */
+    var $status;
+
+    /**
+     * Series of `Event`'s representing the changes the `Order` has undergone since re-hydration
+     * @var array
+     */
+    var $changes = array();
+
+    /**
+     * Re-hydrate an instance of an `Order` by applying some `array` of `Event`'s 
+     * @param array|null [$events] Series of `Event`s to apply
+     */
     function __construct(array $events = [])
     {
-        echo __METHOD__."(".json_encode($events).") <br/>"; // 
+        echo __METHOD__."(".json_encode($events).") <br/>";
         foreach ($events as $index => $event) {
             $this->apply($event);
         }
-        $this->changes = [];
     }
 
+    /**
+     * Mutate the state of this `Order` by applying an `Event` 
+     * @param OrderCreated|StatusChanged $event `Event` being applied
+     */
     function apply($event)
     {
         echo __METHOD__."(".json_encode($event).") <br/>";
@@ -33,6 +59,10 @@ class Order
         }
     }
 
+    /**
+     * Change the status of this `Order` 
+     * @param string|null $new_status New `Order::$status` value
+     */
     function set_status(string $new_status = null)
     {
         echo __METHOD__."($new_status) <br/>";
@@ -44,7 +74,7 @@ class Order
         array_push($this->changes, $event);
     }
 }
-
+/**  GLOBAL `string` represetation of the `Order` class */ 
 define("ORDER_CLASS", get_class(new Order()));
 echo ORDER_CLASS." Loaded! <br/>";
 
