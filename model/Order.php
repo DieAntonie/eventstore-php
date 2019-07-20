@@ -38,6 +38,19 @@ class Order
     }
 
     /**
+     * Instantiates a new `Order` by some `User`
+     * @param int $user_id `User::$id` creating the `Order`
+     */
+    static function create(int $user_id)
+    {
+        echo __METHOD__."($user_id) <br/>";
+        $initial_event = new OrderCreated($user_id);
+        $instance = new Order(array($initial_event));
+        array_push($instance->changes, $initial_event);
+        return $instance;
+    }
+
+    /**
      * Mutate the state of this `Order` by applying an `Event` 
      * @param OrderCreated|StatusChanged $event `Event` being applied
      */
