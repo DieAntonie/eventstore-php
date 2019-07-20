@@ -57,18 +57,12 @@ class Order
     function apply($event)
     {
         echo __METHOD__."(".json_encode($event).") <br/>";
-        switch (get_class($event)) {
-            case ORDER_CREATED_CLASS:
-                $this->user_id = $event->user_id;
-                $this->status = "new";
-                break;
-
-            case STATUS_CHANGED_CLASS:
-                $this->status = $event->new_status;
-                break;
-
-            default:
-                break;
+        if ($event instanceof OrderCreated) {
+            $this->user_id = $event->user_id;
+            $this->status = "new";
+        }
+        elseif ($event instanceof StatusChanged) {
+            $this->status = $event->new_status;
         }
     }
 
