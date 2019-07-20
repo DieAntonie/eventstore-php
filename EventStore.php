@@ -1,5 +1,7 @@
 <?php
 
+echo "Loading EventStore.php... <br/>";
+
 /** Robust event store for retriving and persisting aggregate event streams*/
 abstract class EventStore
 {
