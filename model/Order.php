@@ -30,7 +30,7 @@ class Order extends Aggregate
         parent::__construct($event_stream);
         if ($event_stream)
             foreach ($event_stream->events as $event)
-                $this->apply($event);
+                $this->apply($event, true);
             
     }
 
@@ -41,18 +41,17 @@ class Order extends Aggregate
     static function create(int $user_id)
     {
         echo __METHOD__."($user_id) <br/>";
-        $initial_event = new OrderCreated($user_id);
-        $event_stream = new EventStream(array($initial_event));
-        $instance = new Order($event_stream);
-        array_push($instance->changes, $initial_event);
+        $instance = new Order();
+        $instance->apply(new OrderCreated(null, $user_id));
         return $instance;
     }
 
     /**
      * Mutate the state of this `Order` by applying an `Event` 
      * @param OrderCreated|StatusChanged $event `Event` being applied
+     * @param bool $hydration `Event` being applied as re-hydration?
      */
-    function apply($event)
+    function apply($event, $hydration = false)
     {
         echo __METHOD__."(".json_encode($event).") <br/>";
         if ($event instanceof OrderCreated) {
@@ -62,6 +61,8 @@ class Order extends Aggregate
         elseif ($event instanceof StatusChanged) {
             $this->status = $event->new_status;
         }
+        if (!$hydration)
+            array_push($this->changes, $event);
     }
 
     /**
@@ -74,9 +75,8 @@ class Order extends Aggregate
         if (!in_array($new_status, ["new", "paid", "confirmed", "shipped"]))
             throw new Exception("\"$new_status\" is not a correct status", 1);
             
-        $event = new StatusChanged($new_status);
+        $event = new StatusChanged(null, $new_status);
         $this->apply($event);
-        array_push($this->changes, $event);
     }
 }
 /**  GLOBAL `string` represetation of the `Order` class */ 

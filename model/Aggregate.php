@@ -14,8 +14,9 @@ Interface IAggregate
     /**
      * Mutate the state of this `Order` by applying an `Event` 
      * @param Event $event `Event` being applied
+     * @param bool $hydration `Event` being applied as re-hydration?
      */
-    function apply($event); 
+    function apply($event, $hydration); 
 }
 
 abstract class Aggregate implements IAggregate
@@ -46,8 +47,9 @@ abstract class Aggregate implements IAggregate
     /**
      * Mutate the state of this `Order` by applying an `Event` 
      * @param OrderCreated|StatusChanged $event `Event` being applied
+     * @param bool $hydration `Event` being applied as re-hydration?
      */
-    abstract function apply($event);
+    abstract function apply($event, $hydration = false);
 }
 /**  GLOBAL `string` represetation of the `Aggregate` class */ 
 define("AGGREGATE_CLASS", "Aggregate");
