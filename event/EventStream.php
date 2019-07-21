@@ -1,6 +1,6 @@
 <?php
 
-echo "Loading EventStream.php...";
+echo "Loading EventStream.php... <br/>";
 
 /**
  * A simple data structure with list of `Event`'s needed for aggregate’s initialization and current aggregate’s 

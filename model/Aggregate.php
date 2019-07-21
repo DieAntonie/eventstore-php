@@ -1,6 +1,6 @@
 <?php
 
-echo "Loading Aggreagte.php...";
+echo "Loading Aggreagte.php... <br/>";
 
 require_once "event/EventStream.php";
 
