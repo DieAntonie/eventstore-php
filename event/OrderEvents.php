@@ -34,8 +34,8 @@ abstract class OrderEvent implements IOrderEvent
     }
 }
 
-/** Event corrosponding to some `Order` being created. */
-class OrderCreated
+/** `OrderEvent` corrosponding to some `Order` being created. */
+class OrderCreated extends OrderEvent
 {
     /**
      * `OrderCreated` event payload of user creating the `Order`.
@@ -45,12 +45,14 @@ class OrderCreated
 
     /**
      * Capture the event of an `Order` being created with the `$user_id` of some `User`
+     * @param string $uuid `OrderEvent` unique identifier
      * @param int|null $user_id User creating `Order`
      * @return OrderCreated
      */
-    function __construct(int $user_id = null)
+    function __construct(string $uuid = null, int $user_id = null)
     {
-        echo __METHOD__."($user_id) <br/>";
+        echo __METHOD__."($uuid, $user_id) <br/>";
+        parent::__construct($uuid);
         $this->user_id = $user_id;
     }
 }
@@ -59,7 +61,7 @@ define("ORDER_CREATED_CLASS", get_class(new OrderCreated()));
 echo ORDER_CREATED_CLASS." Loaded! <br/>";
 
 /** Event corrosponding to `Order::$status` being changed. */
-class StatusChanged
+class StatusChanged extends OrderEvent
 {
     /**
      * `StatusChanged` event payload of status the `Order` is changing too.
@@ -69,12 +71,14 @@ class StatusChanged
 
     /**
      * Capture the event of an `Order` changing status
+     * @param string $uuid `OrderEvent` unique identifier 
      * @param string|null $new_status New status value of `Order::$status`
      * @return StatusChanged
      */
-    function __construct(string $new_status = null)
+    function __construct(string $uuid = null, string $new_status = null)
     {
         echo __METHOD__."($new_status) <br/>";
+        parent::__construct($uuid);
         $this->new_status = $new_status;
     }
 }
