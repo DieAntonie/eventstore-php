@@ -24,7 +24,13 @@ abstract class Aggregate implements IAggregate
      * Aggregate’s current version
      * @var int
      */
-    var $version;
+    protected $version;
+
+    /**
+     * Series of `Event`'s representing the changes the `Aggregate` has undergone since re-hydration
+     * @var array
+     */
+    protected $changes = array();
 
     /**
      * Re-hydrate an instance of an `Order` by applying some `array` of `Event`'s 

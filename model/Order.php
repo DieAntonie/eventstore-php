@@ -21,12 +21,6 @@ class Order extends Aggregate
     var $status;
 
     /**
-     * Series of `Event`'s representing the changes the `Order` has undergone since re-hydration
-     * @var array
-     */
-    var $changes = array();
-
-    /**
      * Re-hydrate an instance of an `Order` by applying some `array` of `Event`'s 
      * @param EventStore|null [$event_stream] Series of `Event`s to apply
      */
