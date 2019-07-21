@@ -3,9 +3,10 @@
 echo "Loading Order.php... <br/>";
 
 require_once "event/OrderEvents.php";
+require_once "model/Aggregate.php";
 
 /** Stateful representation of an Order */
-class Order 
+class Order extends Aggregate
 {
     /**
      * `User` assoiciated with the `Order`
@@ -27,14 +28,16 @@ class Order
 
     /**
      * Re-hydrate an instance of an `Order` by applying some `array` of `Event`'s 
-     * @param array|null [$events] Series of `Event`s to apply
+     * @param EventStore|null [$event_stream] Series of `Event`s to apply
      */
-    function __construct(array $events = [])
+    function __construct(EventStream $event_stream = null)
     {
-        echo __METHOD__."(".json_encode($events).") <br/>";
-        foreach ($events as $index => $event) {
-            $this->apply($event);
-        }
+        echo __METHOD__."(".json_encode($event_stream).") <br/>";
+        parent::__construct($event_stream);
+        if ($event_stream)
+            foreach ($event_stream->events as $event)
+                $this->apply($event);
+            
     }
 
     /**
@@ -45,7 +48,8 @@ class Order
     {
         echo __METHOD__."($user_id) <br/>";
         $initial_event = new OrderCreated($user_id);
-        $instance = new Order(array($initial_event));
+        $event_stream = new EventStream(array($initial_event));
+        $instance = new Order($event_stream);
         array_push($instance->changes, $initial_event);
         return $instance;
     }
