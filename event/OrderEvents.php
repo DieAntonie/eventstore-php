@@ -77,7 +77,7 @@ class StatusChanged extends OrderEvent
      */
     function __construct(string $uuid = null, string $new_status = null)
     {
-        echo __METHOD__."($new_status) <br/>";
+        echo __METHOD__."($uuid, $new_status) <br/>";
         parent::__construct($uuid);
         $this->new_status = $new_status;
     }

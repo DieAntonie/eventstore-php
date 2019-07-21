@@ -2,8 +2,8 @@
 
 echo "Loading Order.php... <br/>";
 
-require_once "event/OrderEvents.php";
 require_once "model/Aggregate.php";
+require_once "event/OrderEvents.php";
 
 /** Stateful representation of an Order */
 class Order extends Aggregate

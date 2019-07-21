@@ -25,12 +25,15 @@ class EventStream
      * @param array $events `Event`'s needed for aggregate’s initialization
      * @param int|null $version Aggregate’s expected current version
      */
-    function __construct(array $events, int $version = null)
+    function __construct(array $events = null, int $version = null)
     {
         echo __METHOD__."(".json_encode($events).",$version) <br/>";
         $this->events = $events;
         $this->version = $version;
     }
 }
+/**  GLOBAL `string` represetation of the `EventStream` class */ 
+define("EVENT_STREAM_CLASS", get_class(new EventStream()));
+echo EVENT_STREAM_CLASS." Loaded! <br/>";
 
 ?>

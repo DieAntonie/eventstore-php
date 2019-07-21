@@ -2,8 +2,6 @@
 
 echo "Loading Aggreagte.php... <br/>";
 
-require_once "event/EventStream.php";
-
 Interface IAggregate
 {
 
@@ -45,5 +43,8 @@ abstract class Aggregate implements IAggregate
      */
     abstract function apply($event);
 }
+/**  GLOBAL `string` represetation of the `Aggregate` class */ 
+define("AGGREGATE_CLASS", "Aggregate");
+echo AGGREGATE_CLASS." Loaded! <br/>";
 
 ?>

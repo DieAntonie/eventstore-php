@@ -21,5 +21,10 @@ abstract class EventStore
      */
     abstract function append_to_stream(string $aggregate_uuid, int $expected_version, array $events);
 }
+/**  GLOBAL `string` represetation of the `EventStore` class */ 
+define("EVENT_STORE_CLASS", "EventStore");
+echo EVENT_STORE_CLASS." Loaded! <br/>";
+
+
 
 ?>

@@ -79,5 +79,8 @@ class MySQLEventStore extends EventStore
         }
     }
 }
+/**  GLOBAL `string` represetation of the `MySQLEventStore` class */ 
+define("MYSQL_EVENT_STORE_CLASS", get_class(new MySQLEventStore()));
+echo MYSQL_EVENT_STORE_CLASS." Loaded! <br/>";
 
 ?>
