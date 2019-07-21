@@ -2,7 +2,17 @@
 
 echo "Loading OrderEvents.php... <br/>";
 
-require_once "model/Order.php";
+/** Interface for an `OrderEvent` */
+interface IOrderEvent
+{
+    /**
+     * Capture an event
+     * @param string $uuid User creating `Order`
+     * @return OrderEvent
+     */
+    function __construct(string $uuid);
+}
+
 
 /** Event corrosponding to some `Order` being created. */
 class OrderCreated
