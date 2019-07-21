@@ -13,6 +13,26 @@ interface IOrderEvent
     function __construct(string $uuid);
 }
 
+/** Abstract base for all `OrderEvent`s that mutate the `Order` aggregate */
+abstract class OrderEvent implements IOrderEvent
+{
+    /**
+     * Unique identifier for the 'OrderEvent'
+     * @var string
+     */
+    var $uuid;
+
+    /**
+     * Capture an event
+     * @param string $uuid Event unique identifier
+     * @return OrderEvent
+     */
+    function __construct(string $uuid = null)
+    {
+        echo __METHOD__."($uuid) <br/>";
+        $this->uuid = $uuid;
+    }
+}
 
 /** Event corrosponding to some `Order` being created. */
 class OrderCreated
