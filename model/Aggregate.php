@@ -45,6 +45,16 @@ abstract class Aggregate implements IAggregate
     }
 
     /**
+     * Re-hydrate an instance of an `Order` by applying some `array` of `Event`'s 
+     * @param EventStore|null [$event_stream] Series of `Event`s to apply
+     */
+    function getChanges()
+    {
+        echo __METHOD__."() <br/>";
+        return $this->changes;
+    }
+
+    /**
      * Mutate the state of this `Order` by applying an `Event` 
      * @param OrderCreated|StatusChanged $event `Event` being applied
      * @param bool $hydration `Event` being applied as re-hydration?

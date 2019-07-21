@@ -59,7 +59,7 @@ $myStore = new MySQLEventStore();
 
 $orderAggregate = gen_uuid();
 
-$myStore->append_to_stream($orderAggregate, null, $myOrder->changes);
+$myStore->append_to_stream($orderAggregate, null, $myOrder->getChanges());
 
 
 
