@@ -4,7 +4,6 @@ echo "Loading Aggreagte.php... <br/>";
 
 Interface IAggregate
 {
-
     /**
      * Re-hydrate an instance of an `Order` by applying some `array` of `Event`'s 
      * @param EventStore|null [$event_stream] Series of `Event`s to apply
@@ -18,6 +17,7 @@ Interface IAggregate
      */
     function apply($event, $hydration); 
 }
+
 
 abstract class Aggregate implements IAggregate
 {

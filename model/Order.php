@@ -53,7 +53,7 @@ class Order extends Aggregate
      */
     function apply($event, $hydration = false)
     {
-        echo __METHOD__."(".json_encode($event).") <br/>";
+        echo __METHOD__."(".json_encode($event).", $hydration) <br/>";
         if ($event instanceof OrderCreated) {
             $this->user_id = $event->user_id;
             $this->status = "new";
