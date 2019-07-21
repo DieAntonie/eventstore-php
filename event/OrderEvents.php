@@ -20,7 +20,7 @@ abstract class OrderEvent implements IOrderEvent
      * Unique identifier for the 'OrderEvent'
      * @var string
      */
-    var $uuid;
+    protected $uuid;
 
     /**
      * Capture an event
