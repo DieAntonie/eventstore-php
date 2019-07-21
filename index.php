@@ -1,10 +1,9 @@
 <?php
 
 require_once "model/Order.php";
-require_once "event/OrderEvents.php";
 /**
  * =========================================
- * Output:
+ * Output: require_once "model/Order.php";
  * =========================================
  * Loading Order.php... 
  * Loading OrderEvents.php... 
@@ -15,6 +14,10 @@ require_once "event/OrderEvents.php";
  * Order::__construct([])
  * Order Loaded! 
  */
+
+ 
+require_once "utils/MySQLEventStore.php";
+require_once "utils/Tools.php";
 
 $myOrder = Order::create(3);
 /**
@@ -37,7 +40,7 @@ $myOrder->set_status("shipped");
  * Order::apply({"new_status":"shipped"}) 
  */
 
-echo json_encode($myOrder);
+echo json_encode($myOrder)."<br/>";
 /**
  * =========================================
  * Output:
@@ -51,5 +54,13 @@ echo json_encode($myOrder);
  *   ]
  * }
  */
+
+$myStore = new MySQLEventStore();
+
+$orderAggregate = gen_uuid();
+
+$myStore->append_to_stream($orderAggregate, null, $myOrder->changes);
+
+
 
 ?>
