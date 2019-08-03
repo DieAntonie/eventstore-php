@@ -44,20 +44,25 @@ class MySQLEventStore extends EventStore
     /**
      * @inheritdoc
      */
-    function append_to_stream(string $aggregate_uuid, int $expected_version = null, array $events)
+    function append_to_stream(Aggregate $aggregate)
     {
-        echo __METHOD__."($aggregate_uuid, $expected_version, ".json_encode($events).") <br/>";
+        echo __METHOD__."(".json_encode($aggregate).") <br/>";
         $servername = "localhost";
         $username = "root";
         $password = "";
         $dbname = "flashcards";
         $mysqli = new mysqli($servername, $username, $password, $dbname);
         $query = new Query($mysqli);
-        if ($expected_version) {
+
+        $aggregate_version = $aggregate->getVersion();
+        $aggregate_uuid = $aggregate->getUuid();
+        $aggregate_changes = $aggregate->getChanges();
+
+        if ($aggregate_version) {
             $query->table('aggregates')
-                ->update(array("version"), $expected_version + 1)
+                ->update(array("version"), $aggregate_version + 1)
                 ->where("uuid", "=",  $aggregate_uuid)
-                ->and_where("version", "=", $expected_version)
+                ->and_where("version", "=", $aggregate_version)
                 ->execute();
         } else {
             $query->table('aggregates')
@@ -65,7 +70,7 @@ class MySQLEventStore extends EventStore
                 ->execute();
         }
 
-        foreach ($events as $event) {
+        foreach ($aggregate_changes as $event) {
             $query->table('events')
                 ->insert(array("uuid",
                                "aggregate_uuid",

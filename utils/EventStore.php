@@ -15,11 +15,9 @@ abstract class EventStore
     /**
      * Accepts a business object's uuid, the expected version (the one we obtained from `EventStore::load_stream()`)
      * and a list of events our aggregate produced.
-     * @param string $aggregate_uuid Business object uinique identifier
-     * @param int $expected_version Protection against concurrent updates
-     * @param array $events List of `Event`'s the aggregate produced
+     * @param Aggregate $aggregate Business object
      */
-    abstract function append_to_stream(string $aggregate_uuid, int $expected_version, array $events);
+    abstract function append_to_stream(Aggregate $aggregate);
 }
 /**  GLOBAL `string` represetation of the `EventStore` class */ 
 define("EVENT_STORE_CLASS", "EventStore");

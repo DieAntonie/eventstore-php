@@ -61,13 +61,13 @@ echo json_encode($myOrder)."<br/>";
 
 $myStore = new MySQLEventStore();
 
-$orderAggregate = gen_uuid();
-
-$myStore->append_to_stream($orderAggregate, null, $myOrder->getChanges());
+$myStore->append_to_stream($myOrder);
 // =========================================
 // Output:
 // =========================================
+// MySQLEventStore::append_to_stream({"user_id":3,"status":"shipped"}) 
+// Aggregate::getVersion() 
+// Aggregate::getUuid() 
 // Aggregate::getChanges() 
-// MySQLEventStore::append_to_stream(29b690c5-f80f-4dc5-8b39-2e67a0ea6803, , [{"user_id":3},{"new_status":"shipped"}])
 
 ?>
