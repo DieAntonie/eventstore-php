@@ -94,4 +94,35 @@ abstract class Aggregate implements IAggregate
 define("AGGREGATE_CLASS", "Aggregate");
 echo AGGREGATE_CLASS." Loaded! <br/>";
 
+
+class AggregateRepository
+{
+    /**
+     * @var EventStore
+     */
+    protected $event_store;
+
+    function __construct(EventStore $event_store = null)
+    {
+        echo __METHOD__."(".json_encode($event_store).") <br/>";
+        $this->event_store = $event_store;
+    }
+
+    function get(string $aggregate_uuid)
+    {
+        echo __METHOD__."($aggregate_uuid) <br/>";
+        $event_stream = $this->event_store->load_stream($aggregate_uuid);
+        return new Aggregate($event_stream);
+    }
+
+    function save(Aggregate $aggregate)
+    {
+        echo __METHOD__."(".json_encode($aggregate).") <br/>";
+        $this->event_store->append_to_stream($aggregate);
+    }
+}
+/**  GLOBAL `string` represetation of the `Aggregate` class */ 
+define("AGGREGATE_REPOSITORY_CLASS", get_class(new AggregateRepository()));
+echo AGGREGATE_REPOSITORY_CLASS." Loaded! <br/>";
+
 ?>
